@@ -48,8 +48,8 @@ public class RelationalParametersParameterAccessor extends ParametersParameterAc
 	 * @see org.springframework.data.relational.repository.query.RelationalParameterAccessor#getValues()
 	 */
 	@Override
-	public Object[] getValues() {
-		return values.toArray();
+	public List<Object> getValues() {
+		return values;
 	}
 
 	/* (non-Javadoc)

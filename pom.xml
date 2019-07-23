@@ -20,7 +20,7 @@
 
 	<properties>
 		<dist.id>spring-data-jdbc</dist.id>
-		<springdata.commons>2.2.0.BUILD-SNAPSHOT</springdata.commons>
+		<springdata.commons>2.2.0.DATACMNS-1556-SNAPSHOT</springdata.commons>
 		<assertj>3.6.2</assertj>
 		<sonar.dynamicAnalysis>reuseReports</sonar.dynamicAnalysis>
 
