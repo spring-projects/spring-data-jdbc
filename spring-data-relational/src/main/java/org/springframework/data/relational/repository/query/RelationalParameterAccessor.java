@@ -15,6 +15,8 @@
  */
 package org.springframework.data.relational.repository.query;
 
+import java.util.List;
+
 import org.springframework.data.repository.query.ParameterAccessor;
 import org.springframework.data.repository.query.Parameters;
 
@@ -28,7 +30,7 @@ public interface RelationalParameterAccessor extends ParameterAccessor {
 	/**
 	 * Returns the raw parameter values of the underlying query method.
 	 */
-	Object[] getValues();
+	List<Object> getValues();
 
 	/**
 	 * @return the bindable parameters.
