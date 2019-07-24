@@ -21,7 +21,7 @@ import java.lang.reflect.Method;
 
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.data.jdbc.core.convert.EntityRowMapper;
-import org.springframework.data.jdbc.core.convert.JdbcConverter;
+import org.springframework.data.jdbc.core.convert.NewJdbcConverter;
 import org.springframework.data.jdbc.repository.QueryMappingConfiguration;
 import org.springframework.data.mapping.callback.EntityCallbacks;
 import org.springframework.data.projection.ProjectionFactory;
@@ -50,7 +50,7 @@ class JdbcQueryLookupStrategy implements QueryLookupStrategy {
 	private final ApplicationEventPublisher publisher;
 	private final EntityCallbacks callbacks;
 	private final RelationalMappingContext context;
-	private final JdbcConverter converter;
+	private final NewJdbcConverter converter;
 	private final QueryMappingConfiguration queryMappingConfiguration;
 	private final NamedParameterJdbcOperations operations;
 
@@ -87,13 +87,13 @@ class JdbcQueryLookupStrategy implements QueryLookupStrategy {
 		Class<?> domainType = queryMethod.getReturnedObjectType();
 		RowMapper<?> configuredQueryMapper = queryMappingConfiguration.getRowMapper(domainType);
 
-		if (configuredQueryMapper != null)
+		if (configuredQueryMapper != null) {
 			return configuredQueryMapper;
+		}
 
 		EntityRowMapper<?> defaultEntityRowMapper = new EntityRowMapper<>( //
 				context.getRequiredPersistentEntity(domainType), //
-				converter //
-		);
+				converter);
 
 		return defaultEntityRowMapper;
 	}

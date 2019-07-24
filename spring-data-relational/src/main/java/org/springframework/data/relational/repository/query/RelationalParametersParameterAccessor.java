@@ -15,9 +15,6 @@
  */
 package org.springframework.data.relational.repository.query;
 
-import java.util.Arrays;
-import java.util.List;
-
 import org.springframework.data.repository.query.Parameters;
 import org.springframework.data.repository.query.ParametersParameterAccessor;
 import org.springframework.data.repository.query.QueryMethod;
@@ -30,7 +27,7 @@ import org.springframework.data.repository.query.QueryMethod;
 public class RelationalParametersParameterAccessor extends ParametersParameterAccessor
 		implements RelationalParameterAccessor {
 
-	private final List<Object> values;
+	private final Object[] values;
 
 	/**
 	 * Creates a new {@link RelationalParametersParameterAccessor}.
@@ -41,14 +38,14 @@ public class RelationalParametersParameterAccessor extends ParametersParameterAc
 	public RelationalParametersParameterAccessor(QueryMethod method, Object[] values) {
 
 		super(method.getParameters(), values);
-		this.values = Arrays.asList(values);
+		this.values = values;
 	}
 
 	/* (non-Javadoc)
 	 * @see org.springframework.data.relational.repository.query.RelationalParameterAccessor#getValues()
 	 */
 	@Override
-	public List<Object> getValues() {
+	public Object[] getValues() {
 		return values;
 	}
 

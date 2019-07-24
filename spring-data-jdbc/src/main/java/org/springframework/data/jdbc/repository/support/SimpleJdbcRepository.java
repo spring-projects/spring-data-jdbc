@@ -86,6 +86,7 @@ public class SimpleJdbcRepository<T, ID> implements CrudRepository<T, ID> {
 	 * @see org.springframework.data.repository.CrudRepository#findAll()
 	 */
 	@Override
+	@Transactional(readOnly = true)
 	public Iterable<T> findAll() {
 		return entityOperations.findAll(entity.getType());
 	}

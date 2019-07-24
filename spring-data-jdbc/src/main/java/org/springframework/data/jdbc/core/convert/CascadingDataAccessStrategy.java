@@ -21,7 +21,9 @@ import java.util.Map;
 import java.util.function.Consumer;
 import java.util.function.Function;
 
+import org.springframework.data.convert.ObjectPath;
 import org.springframework.data.mapping.PersistentPropertyPath;
+import org.springframework.data.relational.core.mapping.RelationalPersistentEntity;
 import org.springframework.data.relational.core.mapping.RelationalPersistentProperty;
 import org.springframework.data.relational.domain.Identifier;
 
@@ -166,6 +168,16 @@ public class CascadingDataAccessStrategy implements DataAccessStrategy {
 	@Override
 	public <T> boolean existsById(Object id, Class<T> domainType) {
 		return collect(das -> das.existsById(id, domainType));
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * @see org.springframework.data.jdbc.core.convert.NewRelationResolver#findAllByPath(org.springframework.data.convert.ObjectPath, org.springframework.data.relational.core.mapping.RelationalPersistentProperty)
+	 */
+	@Override
+	public Iterable<Object> findAllByPath(ObjectPath<RelationalPersistentEntity<?>> path,
+			RelationalPersistentProperty property) {
+		return collect(das -> das.findAllByPath(path, property));
 	}
 
 	private <T> T collect(Function<DataAccessStrategy, T> function) {

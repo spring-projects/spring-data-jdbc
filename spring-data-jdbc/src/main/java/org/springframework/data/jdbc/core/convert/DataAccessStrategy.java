@@ -30,7 +30,7 @@ import org.springframework.lang.Nullable;
  *
  * @author Jens Schauder
  */
-public interface DataAccessStrategy extends RelationResolver {
+public interface DataAccessStrategy extends RelationResolver, NewRelationResolver {
 
 	/**
 	 * Inserts a the data of a single entity. Referenced entities don't get handled.

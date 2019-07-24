@@ -28,6 +28,8 @@ import java.util.function.Predicate;
 import org.springframework.dao.DataRetrievalFailureException;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.dao.InvalidDataAccessApiUsageException;
+import org.springframework.data.convert.EntityInstantiators;
+import org.springframework.data.convert.ObjectPath;
 import org.springframework.data.jdbc.support.JdbcUtil;
 import org.springframework.data.mapping.PersistentProperty;
 import org.springframework.data.mapping.PersistentPropertyAccessor;
@@ -63,6 +65,7 @@ public class DefaultDataAccessStrategy implements DataAccessStrategy {
 	private final RelationalMappingContext context;
 	private final JdbcConverter converter;
 	private final NamedParameterJdbcOperations operations;
+	private final NewJdbcConverter newConverter;
 
 	/**
 	 * Creates a {@link DefaultDataAccessStrategy}
@@ -85,6 +88,7 @@ public class DefaultDataAccessStrategy implements DataAccessStrategy {
 		this.context = context;
 		this.converter = converter;
 		this.operations = operations;
+		this.newConverter = new NewJdbcConverterImpl(context, this, new EntityInstantiators());
 	}
 
 	/*
@@ -284,6 +288,16 @@ public class DefaultDataAccessStrategy implements DataAccessStrategy {
 
 	/*
 	 * (non-Javadoc)
+	 * @see org.springframework.data.jdbc.core.convert.NewRelationResolver#findAllByPath(org.springframework.data.convert.ObjectPath, org.springframework.data.relational.core.mapping.RelationalPersistentProperty)
+	 */
+	@Override
+	public Iterable<Object> findAllByPath(ObjectPath<RelationalPersistentEntity<?>> path,
+			RelationalPersistentProperty property) {
+		return Collections.emptyList();
+	}
+
+	/*
+	 * (non-Javadoc)
 	 * @see org.springframework.data.jdbc.core.DataAccessStrategy#findAllByProperty(java.lang.Object, org.springframework.data.jdbc.mapping.model.JdbcPersistentProperty)
 	 */
 	@Override
@@ -364,8 +378,8 @@ public class DefaultDataAccessStrategy implements DataAccessStrategy {
 		RelationalPersistentProperty idProperty = persistentEntity.getIdProperty();
 		return idValue == null //
 				|| idProperty == null //
-				|| (idProperty.getType() == int.class && idValue.equals(0)) //
-				|| (idProperty.getType() == long.class && idValue.equals(0L));
+				|| idProperty.getType() == int.class && idValue.equals(0) //
+				|| idProperty.getType() == long.class && idValue.equals(0L);
 	}
 
 	@Nullable
@@ -389,11 +403,11 @@ public class DefaultDataAccessStrategy implements DataAccessStrategy {
 	}
 
 	private EntityRowMapper<?> getEntityRowMapper(Class<?> domainType) {
-		return new EntityRowMapper<>(getRequiredPersistentEntity(domainType), converter);
+		return new EntityRowMapper<>(getRequiredPersistentEntity(domainType), newConverter);
 	}
 
 	private EntityRowMapper<?> getEntityRowMapper(PersistentPropertyPathExtension path, Identifier identifier) {
-		return new EntityRowMapper<>(path, converter, identifier);
+		return new EntityRowMapper<>(path, identifier, newConverter);
 	}
 
 	private RowMapper<?> getMapEntityRowMapper(PersistentPropertyPathExtension path, Identifier identifier) {

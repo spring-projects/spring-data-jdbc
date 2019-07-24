@@ -20,7 +20,6 @@ import static java.util.Collections.*;
 import static org.assertj.core.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.*;
 import static org.mockito.Mockito.*;
-
 import lombok.AllArgsConstructor;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
@@ -48,9 +47,10 @@ import org.junit.Test;
 import org.mockito.ArgumentMatchers;
 import org.mockito.invocation.InvocationOnMock;
 import org.mockito.stubbing.Answer;
-
 import org.springframework.data.annotation.Id;
 import org.springframework.data.annotation.PersistenceConstructor;
+import org.springframework.data.convert.EntityInstantiators;
+import org.springframework.data.jdbc.core.convert.EntityRowMapperUnitTests.*;
 import org.springframework.data.jdbc.core.mapping.JdbcMappingContext;
 import org.springframework.data.mapping.PersistentPropertyPath;
 import org.springframework.data.relational.core.mapping.Embedded;
@@ -302,7 +302,8 @@ public class EntityRowMapperUnitTests {
 				ID_FOR_ENTITY_NOT_REFERENCING_MAP, "ru'Ha'");
 		rs.next();
 
-		WithNullableEmbeddedImmutableValue extracted = createRowMapper(WithNullableEmbeddedImmutableValue.class).mapRow(rs, 1);
+		WithNullableEmbeddedImmutableValue extracted = createRowMapper(WithNullableEmbeddedImmutableValue.class).mapRow(rs,
+				1);
 
 		assertThat(extracted) //
 				.isNotNull() //
@@ -333,7 +334,8 @@ public class EntityRowMapperUnitTests {
 				ID_FOR_ENTITY_NOT_REFERENCING_MAP, 24);
 		rs.next();
 
-		WithEmbeddedPrimitiveImmutableValue extracted = createRowMapper(WithEmbeddedPrimitiveImmutableValue.class).mapRow(rs, 1);
+		WithEmbeddedPrimitiveImmutableValue extracted = createRowMapper(WithEmbeddedPrimitiveImmutableValue.class)
+				.mapRow(rs, 1);
 
 		assertThat(extracted) //
 				.isNotNull() //
@@ -348,7 +350,8 @@ public class EntityRowMapperUnitTests {
 				ID_FOR_ENTITY_NOT_REFERENCING_MAP, null);
 		rs.next();
 
-		WithNullableEmbeddedImmutableValue extracted = createRowMapper(WithNullableEmbeddedImmutableValue.class).mapRow(rs, 1);
+		WithNullableEmbeddedImmutableValue extracted = createRowMapper(WithNullableEmbeddedImmutableValue.class).mapRow(rs,
+				1);
 
 		assertThat(extracted) //
 				.isNotNull() //
@@ -396,7 +399,8 @@ public class EntityRowMapperUnitTests {
 				ID_FOR_ENTITY_NOT_REFERENCING_MAP, null);
 		rs.next();
 
-		WithEmbeddedPrimitiveImmutableValue extracted = createRowMapper(WithEmbeddedPrimitiveImmutableValue.class).mapRow(rs, 1);
+		WithEmbeddedPrimitiveImmutableValue extracted = createRowMapper(WithEmbeddedPrimitiveImmutableValue.class)
+				.mapRow(rs, 1);
 
 		assertThat(extracted) //
 				.isNotNull() //
@@ -640,8 +644,8 @@ public class EntityRowMapperUnitTests {
 
 		return new EntityRowMapper<>( //
 				(RelationalPersistentEntity<T>) context.getRequiredPersistentEntity(type), //
-				converter //
-		);
+				converter, //
+				new NewJdbcConverterImpl(context, new EntityInstantiators()));
 	}
 
 	private Identifier identifierOfValue(long value) {

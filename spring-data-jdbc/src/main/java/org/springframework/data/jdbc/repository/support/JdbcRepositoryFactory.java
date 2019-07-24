@@ -20,7 +20,7 @@ import java.util.Optional;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.data.jdbc.core.JdbcAggregateTemplate;
 import org.springframework.data.jdbc.core.convert.DataAccessStrategy;
-import org.springframework.data.jdbc.core.convert.JdbcConverter;
+import org.springframework.data.jdbc.core.convert.NewJdbcConverter;
 import org.springframework.data.jdbc.repository.QueryMappingConfiguration;
 import org.springframework.data.jdbc.repository.RowMapperMap;
 import org.springframework.data.mapping.callback.EntityCallbacks;
@@ -48,7 +48,7 @@ import org.springframework.util.Assert;
 public class JdbcRepositoryFactory extends RepositoryFactorySupport {
 
 	private final RelationalMappingContext context;
-	private final JdbcConverter converter;
+	private final NewJdbcConverter converter;
 	private final ApplicationEventPublisher publisher;
 	private final DataAccessStrategy accessStrategy;
 	private final NamedParameterJdbcOperations operations;
@@ -67,7 +67,7 @@ public class JdbcRepositoryFactory extends RepositoryFactorySupport {
 	 * @param operations must not be {@literal null}.
 	 */
 	public JdbcRepositoryFactory(DataAccessStrategy dataAccessStrategy, RelationalMappingContext context,
-			JdbcConverter converter, ApplicationEventPublisher publisher, NamedParameterJdbcOperations operations) {
+			NewJdbcConverter converter, ApplicationEventPublisher publisher, NamedParameterJdbcOperations operations) {
 
 		Assert.notNull(dataAccessStrategy, "DataAccessStrategy must not be null!");
 		Assert.notNull(context, "RelationalMappingContext must not be null!");

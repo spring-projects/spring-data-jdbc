@@ -37,24 +37,25 @@ public class EntityRowMapper<T> implements RowMapper<T> {
 
 	private final RelationalPersistentEntity<T> entity;
 	private final PersistentPropertyPathExtension path;
-	private final JdbcConverter converter;
 	private final Identifier identifier;
 
+	private final NewJdbcConverter newConverter;
+
 	@SuppressWarnings("unchecked")
-	public EntityRowMapper(PersistentPropertyPathExtension path, JdbcConverter converter, Identifier identifier) {
+	public EntityRowMapper(PersistentPropertyPathExtension path, Identifier identifier, NewJdbcConverter newConverter) {
 
 		this.entity = (RelationalPersistentEntity<T>) path.getLeafEntity();
 		this.path = path;
-		this.converter = converter;
 		this.identifier = identifier;
+		this.newConverter = newConverter;
 	}
 
-	public EntityRowMapper(RelationalPersistentEntity<T> entity, JdbcConverter converter) {
+	public EntityRowMapper(RelationalPersistentEntity<T> entity, NewJdbcConverter newConverter) {
 
 		this.entity = entity;
 		this.path = null;
-		this.converter = converter;
 		this.identifier = null;
+		this.newConverter = newConverter;
 	}
 
 	/*
@@ -64,8 +65,9 @@ public class EntityRowMapper<T> implements RowMapper<T> {
 	@Override
 	public T mapRow(ResultSet resultSet, int rowNumber) {
 
-		return path == null ? converter.mapRow(entity, resultSet, rowNumber)
-				: converter.mapRow(path, resultSet, identifier, rowNumber);
-	}
+		return newConverter.read(entity.getType(), resultSet);
 
+		// return path == null ? converter.mapRow(entity, resultSet, rowNumber)
+		// : converter.mapRow(path, resultSet, identifier, rowNumber);
+	}
 }

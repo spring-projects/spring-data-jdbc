@@ -17,7 +17,9 @@ package org.springframework.data.jdbc.core.convert;
 
 import java.util.Map;
 
+import org.springframework.data.convert.ObjectPath;
 import org.springframework.data.mapping.PersistentPropertyPath;
+import org.springframework.data.relational.core.mapping.RelationalPersistentEntity;
 import org.springframework.data.relational.core.mapping.RelationalPersistentProperty;
 import org.springframework.data.relational.domain.Identifier;
 import org.springframework.util.Assert;
@@ -164,6 +166,16 @@ public class DelegatingDataAccessStrategy implements DataAccessStrategy {
 	@Override
 	public <T> boolean existsById(Object id, Class<T> domainType) {
 		return delegate.existsById(id, domainType);
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * @see org.springframework.data.jdbc.core.convert.NewRelationResolver#findAllByPath(org.springframework.data.convert.ObjectPath, org.springframework.data.relational.core.mapping.RelationalPersistentProperty)
+	 */
+	@Override
+	public Iterable<Object> findAllByPath(ObjectPath<RelationalPersistentEntity<?>> path,
+			RelationalPersistentProperty property) {
+		return delegate.findAllByPath(path, property);
 	}
 
 	/**

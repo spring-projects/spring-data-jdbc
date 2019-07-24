@@ -25,6 +25,7 @@ import org.apache.ibatis.session.SqlSession;
 import org.mybatis.spring.SqlSessionTemplate;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.data.convert.ObjectPath;
 import org.springframework.data.jdbc.core.convert.CascadingDataAccessStrategy;
 import org.springframework.data.jdbc.core.convert.DataAccessStrategy;
 import org.springframework.data.jdbc.core.convert.DefaultDataAccessStrategy;
@@ -34,6 +35,7 @@ import org.springframework.data.jdbc.core.convert.SqlGeneratorSource;
 import org.springframework.data.mapping.PersistentPropertyPath;
 import org.springframework.data.mapping.PropertyPath;
 import org.springframework.data.relational.core.mapping.RelationalMappingContext;
+import org.springframework.data.relational.core.mapping.RelationalPersistentEntity;
 import org.springframework.data.relational.core.mapping.RelationalPersistentProperty;
 import org.springframework.data.relational.domain.Identifier;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcOperations;
@@ -264,6 +266,16 @@ public class MyBatisDataAccessStrategy implements DataAccessStrategy {
 
 			return DataAccessStrategy.super.findAllByPath(identifier, path);
 		}
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * @see org.springframework.data.jdbc.core.convert.NewRelationResolver#findAllByPath(org.springframework.data.convert.ObjectPath, org.springframework.data.relational.core.mapping.RelationalPersistentProperty)
+	 */
+	@Override
+	public Iterable<Object> findAllByPath(ObjectPath<RelationalPersistentEntity<?>> path,
+			RelationalPersistentProperty property) {
+		return Collections.emptyList();
 	}
 
 	/*

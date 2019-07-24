@@ -17,6 +17,7 @@ package org.springframework.data.jdbc.core;
 
 import org.springframework.data.jdbc.core.convert.DataAccessStrategy;
 import org.springframework.data.jdbc.core.convert.JdbcConverter;
+import org.springframework.data.jdbc.core.convert.NewJdbcConverter;
 import org.springframework.data.relational.core.mapping.RelationalPersistentEntity;
 
 /**
@@ -27,7 +28,7 @@ import org.springframework.data.relational.core.mapping.RelationalPersistentEnti
 public class EntityRowMapper<T> extends org.springframework.data.jdbc.core.convert.EntityRowMapper<T> {
 
 	public EntityRowMapper(RelationalPersistentEntity<T> entity, JdbcConverter converter,
-			DataAccessStrategy accessStrategy) {
-		super(entity, converter);
+			DataAccessStrategy accessStrategy, NewJdbcConverter newConverter) {
+		super(entity, newConverter);
 	}
 }
