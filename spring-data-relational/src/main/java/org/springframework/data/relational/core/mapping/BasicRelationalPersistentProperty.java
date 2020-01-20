@@ -44,6 +44,7 @@ import org.springframework.util.StringUtils;
  * @author Greg Turnquist
  * @author Florian Lüdiger
  * @author Bastian Wilhelm
+ * @author Myeonghyeon Lee
  */
 public class BasicRelationalPersistentProperty extends AnnotationBasedPersistentProperty<RelationalPersistentProperty>
 		implements RelationalPersistentProperty {
@@ -123,14 +124,15 @@ public class BasicRelationalPersistentProperty extends AnnotationBasedPersistent
 		return false;
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * @see org.springframework.data.jdbc.core.mapping.model.JdbcPersistentProperty#getColumnName()
-	 */
 	@Override
 	public String getColumnName() {
 		return columnName.get();
 	}
+
+	@Override
+    public String getColumnAlias() {
+	    return getColumnName();
+    }
 
 	/**
 	 * The type to be used to store this property in the database.
