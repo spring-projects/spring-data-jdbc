@@ -15,9 +15,9 @@
  */
 package org.springframework.data.relational.core.sql.render;
 
-import lombok.Value;
-
 import org.springframework.data.relational.core.sql.IdentifierProcessing;
+
+import java.util.Objects;
 
 /**
  * Default {@link RenderContext} implementation.
@@ -25,10 +25,13 @@ import org.springframework.data.relational.core.sql.IdentifierProcessing;
  * @author Mark Paluch
  * @since 1.1
  */
-@Value
-class SimpleRenderContext implements RenderContext {
+final class SimpleRenderContext implements RenderContext {
 
 	private final RenderNamingStrategy namingStrategy;
+
+	public SimpleRenderContext(RenderNamingStrategy namingStrategy) {
+		this.namingStrategy = namingStrategy;
+	}
 
 	@Override
 	public IdentifierProcessing getIdentifierProcessing() {
@@ -38,6 +41,31 @@ class SimpleRenderContext implements RenderContext {
 	@Override
 	public SelectRenderContext getSelect() {
 		return DefaultSelectRenderContext.INSTANCE;
+	}
+
+	public RenderNamingStrategy getNamingStrategy() {
+		return this.namingStrategy;
+	}
+
+	@Override
+	public boolean equals(Object o) {
+		if (this == o) {
+			return true;
+		}
+		if (o == null || getClass() != o.getClass()) {
+			return false;
+		}
+		SimpleRenderContext that = (SimpleRenderContext) o;
+		return namingStrategy.equals(that.namingStrategy);
+	}
+
+	@Override
+	public int hashCode() {
+		return Objects.hash(namingStrategy);
+	}
+
+	public String toString() {
+		return "SimpleRenderContext(namingStrategy=" + this.getNamingStrategy() + ")";
 	}
 
 	enum DefaultSelectRenderContext implements SelectRenderContext {

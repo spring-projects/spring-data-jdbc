@@ -15,11 +15,9 @@
  */
 package org.springframework.data.relational.domain;
 
-import lombok.AccessLevel;
-import lombok.AllArgsConstructor;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
-import lombok.Value;
+import org.springframework.data.relational.core.sql.SqlIdentifier;
+import org.springframework.util.Assert;
+import org.springframework.util.ClassUtils;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -27,10 +25,7 @@ import java.util.Collections;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
-
-import org.springframework.data.relational.core.sql.SqlIdentifier;
-import org.springframework.util.Assert;
-import org.springframework.util.ClassUtils;
+import java.util.Objects;
 
 /**
  * {@literal Identifier} represents a composite id of an entity that may be composed of one or many parts. Parts or all
@@ -41,8 +36,6 @@ import org.springframework.util.ClassUtils;
  * @author Mark Paluch
  * @since 1.1
  */
-@EqualsAndHashCode
-@ToString
 public final class Identifier {
 
 	private static final Identifier EMPTY = new Identifier(Collections.emptyList());
@@ -179,19 +172,88 @@ public final class Identifier {
 		return this.parts.size();
 	}
 
+	public boolean equals(final Object o) {
+		if (o == this) return true;
+		if (!(o instanceof Identifier)) return false;
+		final Identifier other = (Identifier) o;
+		final Object this$parts = this.getParts();
+		final Object other$parts = other.getParts();
+		if (this$parts == null ? other$parts != null : !this$parts.equals(other$parts)) return false;
+		return true;
+	}
+
+	public int hashCode() {
+		final int PRIME = 59;
+		int result = 1;
+		final Object $parts = this.getParts();
+		result = result * PRIME + ($parts == null ? 43 : $parts.hashCode());
+		return result;
+	}
+
+	public String toString() {
+		return "Identifier(parts=" + this.getParts() + ")";
+	}
+
 	/**
 	 * A single value of an Identifier consisting of the column name, the value and the target type which is to be used to
 	 * store the element in the database.
 	 *
 	 * @author Jens Schauder
 	 */
-	@Value
-	@AllArgsConstructor(access = AccessLevel.PRIVATE)
-	static class SingleIdentifierValue {
+	static final class SingleIdentifierValue {
 
-		SqlIdentifier name;
-		Object value;
-		Class<?> targetType;
+		private final SqlIdentifier name;
+		private final Object value;
+		private final Class<?> targetType;
+
+		private SingleIdentifierValue(SqlIdentifier name, Object value, Class<?> targetType) {
+
+			this.name = name;
+			this.value = value;
+			this.targetType = targetType;
+		}
+
+		public SqlIdentifier getName() {
+			return this.name;
+		}
+
+		public Object getValue() {
+			return this.value;
+		}
+
+		public Class<?> getTargetType() {
+			return this.targetType;
+		}
+
+		@Override
+		public boolean equals(Object o) {
+
+			if (this == o) {
+				return true;
+			}
+			if (o == null || getClass() != o.getClass()) {
+				return false;
+			}
+			SingleIdentifierValue that = (SingleIdentifierValue) o;
+			return name.equals(that.name) &&
+					value.equals(that.value) &&
+					targetType.equals(that.targetType);
+		}
+
+		@Override
+		public int hashCode() {
+			return Objects.hash(name, value, targetType);
+		}
+
+		@Override
+		public String toString() {
+
+			return "SingleIdentifierValue{" + //
+					"name=" + name + //
+					", value=" + value + //
+					", targetType=" + targetType + //
+					'}';
+		}
 	}
 
 	/**

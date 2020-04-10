@@ -15,8 +15,6 @@
  */
 package org.springframework.data.relational.core.conversion;
 
-import lombok.RequiredArgsConstructor;
-
 import java.util.Collections;
 import java.util.Optional;
 import java.util.function.Function;
@@ -249,10 +247,13 @@ public class BasicRelationalConverter implements RelationalConverter {
 	 * @param <P>
 	 * @author Mark Paluch
 	 */
-	@RequiredArgsConstructor
 	class ConvertingParameterValueProvider<P extends PersistentProperty<P>> implements ParameterValueProvider<P> {
 
 		private final Function<Parameter<?, P>, Object> delegate;
+
+		public ConvertingParameterValueProvider(Function<Parameter<?, P>, Object> delegate) {
+			this.delegate = delegate;
+		}
 
 		/*
 		 * (non-Javadoc)

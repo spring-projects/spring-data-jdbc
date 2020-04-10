@@ -15,8 +15,6 @@
  */
 package org.springframework.data.jdbc.core.convert;
 
-import lombok.RequiredArgsConstructor;
-
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.HashMap;
@@ -36,7 +34,6 @@ import org.springframework.lang.NonNull;
  *
  * @author Jens Schauder
  */
-@RequiredArgsConstructor
 class MapEntityRowMapper<T> implements RowMapper<Map.Entry<Object, T>> {
 
 	private final PersistentPropertyPathExtension path;
@@ -44,6 +41,16 @@ class MapEntityRowMapper<T> implements RowMapper<Map.Entry<Object, T>> {
 	private final Identifier identifier;
 	private final SqlIdentifier keyColumn;
 	private final IdentifierProcessing identifierProcessing;
+
+	public MapEntityRowMapper(PersistentPropertyPathExtension path, JdbcConverter converter, Identifier identifier,
+			SqlIdentifier keyColumn, IdentifierProcessing identifierProcessing) {
+
+		this.path = path;
+		this.converter = converter;
+		this.identifier = identifier;
+		this.keyColumn = keyColumn;
+		this.identifierProcessing = identifierProcessing;
+	}
 
 	@NonNull
 	@Override

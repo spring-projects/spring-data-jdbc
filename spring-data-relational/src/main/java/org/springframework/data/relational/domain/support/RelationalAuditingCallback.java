@@ -15,8 +15,6 @@
  */
 package org.springframework.data.relational.domain.support;
 
-import lombok.RequiredArgsConstructor;
-
 import org.springframework.context.ApplicationListener;
 import org.springframework.core.Ordered;
 import org.springframework.data.auditing.IsNewAwareAuditingHandler;
@@ -31,7 +29,6 @@ import org.springframework.data.relational.core.mapping.event.BeforeConvertCallb
  * @author Mark Paluch
  * @since 1.1
  */
-@RequiredArgsConstructor
 public class RelationalAuditingCallback implements BeforeConvertCallback<Object>, Ordered {
 
 	/**
@@ -44,6 +41,10 @@ public class RelationalAuditingCallback implements BeforeConvertCallback<Object>
 	public static final int AUDITING_ORDER = 100;
 
 	private final IsNewAwareAuditingHandler handler;
+
+	public RelationalAuditingCallback(IsNewAwareAuditingHandler handler) {
+		this.handler = handler;
+	}
 
 	/*
 	 * (non-Javadoc)

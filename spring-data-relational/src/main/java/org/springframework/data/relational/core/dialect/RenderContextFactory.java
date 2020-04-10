@@ -15,8 +15,6 @@
  */
 package org.springframework.data.relational.core.dialect;
 
-import lombok.RequiredArgsConstructor;
-
 import org.springframework.data.relational.core.sql.IdentifierProcessing;
 import org.springframework.data.relational.core.sql.render.NamingStrategies;
 import org.springframework.data.relational.core.sql.render.RenderContext;
@@ -75,7 +73,6 @@ public class RenderContextFactory {
 	/**
 	 * {@link RenderContext} derived from {@link Dialect} specifics.
 	 */
-	@RequiredArgsConstructor
 	static class DialectRenderContext implements RenderContext {
 
 		private final RenderNamingStrategy renderNamingStrategy;
@@ -83,6 +80,13 @@ public class RenderContextFactory {
 		private final IdentifierProcessing identifierProcessing;
 
 		private final SelectRenderContext selectRenderContext;
+
+		DialectRenderContext(RenderNamingStrategy renderNamingStrategy, IdentifierProcessing identifierProcessing, SelectRenderContext selectRenderContext) {
+
+			this.renderNamingStrategy = renderNamingStrategy;
+			this.identifierProcessing = identifierProcessing;
+			this.selectRenderContext = selectRenderContext;
+		}
 
 		/*
 		 * (non-Javadoc)

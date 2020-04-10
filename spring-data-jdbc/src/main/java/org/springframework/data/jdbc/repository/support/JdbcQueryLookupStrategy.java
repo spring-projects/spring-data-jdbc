@@ -15,10 +15,6 @@
  */
 package org.springframework.data.jdbc.repository.support;
 
-import lombok.RequiredArgsConstructor;
-
-import java.lang.reflect.Method;
-
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.data.jdbc.core.convert.EntityRowMapper;
 import org.springframework.data.jdbc.core.convert.JdbcConverter;
@@ -35,6 +31,8 @@ import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.core.SingleColumnRowMapper;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcOperations;
 
+import java.lang.reflect.Method;
+
 /**
  * {@link QueryLookupStrategy} for JDBC repositories. Currently only supports annotated queries.
  *
@@ -45,7 +43,6 @@ import org.springframework.jdbc.core.namedparam.NamedParameterJdbcOperations;
  * @author Maciej Walkowiak
  * @author Moises Cisneros
  */
-@RequiredArgsConstructor
 class JdbcQueryLookupStrategy implements QueryLookupStrategy {
 
 	private final ApplicationEventPublisher publisher;
@@ -54,6 +51,16 @@ class JdbcQueryLookupStrategy implements QueryLookupStrategy {
 	private final JdbcConverter converter;
 	private final QueryMappingConfiguration queryMappingConfiguration;
 	private final NamedParameterJdbcOperations operations;
+
+	JdbcQueryLookupStrategy(ApplicationEventPublisher publisher, EntityCallbacks callbacks, RelationalMappingContext context, JdbcConverter converter, QueryMappingConfiguration queryMappingConfiguration, NamedParameterJdbcOperations operations) {
+
+		this.publisher = publisher;
+		this.callbacks = callbacks;
+		this.context = context;
+		this.converter = converter;
+		this.queryMappingConfiguration = queryMappingConfiguration;
+		this.operations = operations;
+	}
 
 	/*
 	 * (non-Javadoc)

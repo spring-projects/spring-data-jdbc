@@ -15,8 +15,6 @@
  */
 package org.springframework.data.relational.core.dialect;
 
-import lombok.RequiredArgsConstructor;
-
 import java.util.OptionalLong;
 import java.util.function.Function;
 
@@ -91,10 +89,13 @@ public abstract class AbstractDialect implements Dialect {
 	/**
 	 * After {@code ORDER BY} function rendering the {@link LimitClause}.
 	 */
-	@RequiredArgsConstructor
 	static class AfterOrderByLimitRenderFunction implements Function<Select, CharSequence> {
 
 		private final LimitClause clause;
+
+		AfterOrderByLimitRenderFunction(LimitClause clause) {
+			this.clause = clause;
+		}
 
 		/*
 		 * (non-Javadoc)
@@ -125,10 +126,11 @@ public abstract class AbstractDialect implements Dialect {
 	/**
 	 * Prepends a non-empty rendering result with a leading whitespace,
 	 */
-	@RequiredArgsConstructor
 	enum PrependWithLeadingWhitespace implements Function<CharSequence, CharSequence> {
 
 		INSTANCE;
+
+		private PrependWithLeadingWhitespace() {}
 
 		/*
 		 * (non-Javadoc)

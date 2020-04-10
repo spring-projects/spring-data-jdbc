@@ -15,8 +15,6 @@
  */
 package org.springframework.data.jdbc.core.convert;
 
-import lombok.Value;
-
 import java.util.*;
 import java.util.function.Function;
 import java.util.regex.Pattern;
@@ -667,11 +665,61 @@ class SqlGenerator {
 	/**
 	 * Value object representing a {@code JOIN} association.
 	 */
-	@Value
-	static class Join {
-		Table joinTable;
-		Column joinColumn;
-		Column parentId;
+	static final class Join {
+
+		private final Table joinTable;
+		private final Column joinColumn;
+		private final Column parentId;
+
+		Join(Table joinTable, Column joinColumn, Column parentId) {
+
+			this.joinTable = joinTable;
+			this.joinColumn = joinColumn;
+			this.parentId = parentId;
+		}
+
+		Table getJoinTable() {
+			return this.joinTable;
+		}
+
+		Column getJoinColumn() {
+			return this.joinColumn;
+		}
+
+		Column getParentId() {
+			return this.parentId;
+		}
+
+		@Override
+		public boolean equals(Object o) {
+
+			if (this == o) {
+				return true;
+			}
+			if (o == null || getClass() != o.getClass()) {
+				return false;
+			}
+
+			Join join = (Join) o;
+			return joinTable.equals(join.joinTable) &&
+					joinColumn.equals(join.joinColumn) &&
+					parentId.equals(join.parentId);
+		}
+
+		@Override
+		public int hashCode() {
+			return Objects.hash(joinTable, joinColumn, parentId);
+		}
+
+		@Override
+		public String toString() {
+
+			return "Join{" + //
+					"joinTable=" + joinTable + //
+					", joinColumn=" + joinColumn + //
+					", parentId=" + parentId + //
+					'}';
+		}
 	}
 
 	/**
