@@ -16,6 +16,8 @@
 package org.springframework.data.jdbc.repository;
 
 import static org.assertj.core.api.Assertions.*;
+import static org.springframework.data.jdbc.testing.TestDatabaseFeatures.Feature.*;
+import static org.springframework.test.context.TestExecutionListeners.MergeMode.*;
 
 import junit.framework.AssertionFailedError;
 import lombok.Data;
@@ -34,13 +36,13 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.jdbc.repository.support.JdbcRepositoryFactory;
-import org.springframework.data.jdbc.testing.DatabaseProfileValueSource;
+import org.springframework.data.jdbc.testing.AssumeFeatureRule;
+import org.springframework.data.jdbc.testing.EnabledOnFeature;
 import org.springframework.data.jdbc.testing.TestConfiguration;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
-import org.springframework.test.annotation.IfProfileValue;
-import org.springframework.test.annotation.ProfileValueSourceConfiguration;
 import org.springframework.test.context.ContextConfiguration;
+import org.springframework.test.context.TestExecutionListeners;
 import org.springframework.test.context.junit4.rules.SpringClassRule;
 import org.springframework.test.context.junit4.rules.SpringMethodRule;
 import org.springframework.transaction.annotation.Transactional;
@@ -48,11 +50,11 @@ import org.springframework.transaction.annotation.Transactional;
 /**
  * Very simple use cases for creation and usage of JdbcRepositories.
  *
+ * @author Yunyoung Lee
  * @author Jens Schauder
- * @author Thomas Lang
  */
 @ContextConfiguration
-@ProfileValueSourceConfiguration(DatabaseProfileValueSource.class)
+@TestExecutionListeners(value = AssumeFeatureRule.class, mergeMode = MERGE_WITH_DEFAULTS)
 @Transactional
 public class JdbcRepositoryWithCollectionsAndIDOnlyEntityIntegrationTests {
 
@@ -139,7 +141,7 @@ public class JdbcRepositoryWithCollectionsAndIDOnlyEntityIntegrationTests {
 	}
 
 	@Test // DATAJDBC-557
-	@IfProfileValue(name = "current.database.is.not.mssql", value = "true") // DATAJDBC-278
+	@EnabledOnFeature(SUPPORTS_GENERATED_IDS_IN_REFERENCED_ENTITIES)
 	public void updateSet() {
 
 		Element element1 = createElement("one");

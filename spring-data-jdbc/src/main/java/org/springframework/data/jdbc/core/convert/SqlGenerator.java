@@ -51,6 +51,7 @@ import java.util.stream.Collectors;
  * @author Tyler Van Gorder
  * @author Milan Milanov
  * @author Myeonghyeon Lee
+ * @author Yunyoung Lee
  */
 class SqlGenerator {
 
